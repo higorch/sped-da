@@ -855,8 +855,10 @@ class Dacte extends DaCommon
                 $chaveContingencia = $this->geraChaveAdicCont();
                 $this->pdf->code128($x + 20, $y1 + 10, $chaveContingencia, $bW * .9, $bH / 2);
             } else {
-                $chaveContingencia = $this->getTagValue($this->protCTe, "nProt");
-                $this->pdf->Code128($x + 40, $y1 + 10, $chaveContingencia, $bW * .4, $bH / 2);
+                if ($this->protCTe) {
+                    $chaveContingencia = $this->getTagValue($this->protCTe, "nProt");
+                    $this->pdf->code128($x + 40, $y1 + 10, $chaveContingencia, $bW * .4, $bH / 2);
+                }
             }
             //codigo de barras
         }
