@@ -1574,6 +1574,7 @@ class Dacte extends DaCommon
         $qCargaPesoBruto = 0;
         $qCargaPesoBaseCalculo = 0;
         $qCargaPesoAferido = 0;
+        $tQVolume = 'QTDE(VOL)';
         foreach ($this->infQ as $infQ) {
             if (in_array($this->getTagValue($infQ, "cUnid"), array('01', '02'))) {
                 if ($this->getTagValue($infQ, "tpMed") == 'PESO BRUTO')
@@ -1584,6 +1585,12 @@ class Dacte extends DaCommon
                     $qCargaPesoAferido += $this->getTagValue($infQ, "cUnid") == '01' ? $this->getTagValue($infQ, "qCarga") : $this->getTagValue($infQ, "qCarga") * 1000;
             } else {
                 $qCarga += $this->getTagValue($infQ, "qCarga");
+            }
+
+            if($this->getTagValue($infQ, "cUnid") === '03') {
+                $tQVolume = 'UNIDADE (VOL)';
+            } else if($this->getTagValue($infQ, "cUnid") === '04') {
+                $tQVolume = 'LITROS';
             }
         }
         $texto = 'PESO BRUTO (KG)';
@@ -1645,7 +1652,7 @@ class Dacte extends DaCommon
         $this->pdf->textBox($x + 50, $y + 3, $w, $h, $texto, $aFont, 'T', 'L', 0, '');
         $x = $w * 0.45;
         //$this->pdf->line($x+37, $y, $x+37, $y + 9);
-        $texto = 'QTDE(VOL)';
+        $texto = $tQVolume;
         $aFont = $this->formatPadrao;
         $this->pdf->textBox($x + 85, $y, $w, $h, $texto, $aFont, 'T', 'L', 0, '');
         $qCarga = 0;
